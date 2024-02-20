@@ -1,0 +1,24 @@
+CREATE TABLE cyclistic.`full_year_data` AS (
+    SELECT * FROM cyclistic.`202302_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202303_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202304_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202305_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202306_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202307_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202308_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202309_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202310_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202311_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202312_divvy_tripdata`
+    UNION ALL
+    SELECT * FROM cyclistic.`202401_divvy_tripdata`)
