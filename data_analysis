@@ -1,0 +1,70 @@
+#This file contains all the calculations, data cleaning and exploratory data analysis
+# Create a ride_length column calculating the length of each ride
+ALTER TABLE cyclistic.`full_year_data`
+ADD `ride_length` INT(5)
+    AS (TIMESTAMPDIFF(minute, started_at, ended_at))
+    AFTER member_casual;
+
+#Create a column that determines the day for the ride (1=Sunday, 7=Saturday)
+ALTER TABLE cyclistic.`full_year_data`
+ADD `day_of_week` INT(5)
+    AS (DAYOFWEEK(started_at))
+    AFTER ride_length;
+
+#Create a column that determines the month for the ride
+ALTER TABLE cyclistic.`full_year_data`
+ADD `month` INT(5)
+    AS (MONTH(started_at))
+    AFTER day_of_week;
+
+#Create a column that determines the year for the ride
+ALTER TABLE cyclistic.`full_year_data`
+ADD `year` INT(5)
+    AS (YEAR(started_at))
+    AFTER month;
+
+#Check how many dates are leading to Zero or less riding time
+SELECT *
+FROM cyclistic.full_year_data
+WHERE ride_length <= 0
+
+#Check if any member information is missing
+SELECT *
+FROM cyclistic.full_year_data
+WHERE member_casual IS NULL
+
+#Delete rows with zero or less riding time
+DELETE FROM cyclistic.full_year_data
+WHERE ride_length <= 0
+
+#number of rides
+SELECT (COUNT (ride_id)) AS total_rides, COUNT (DISTINCT ride_id) AS unique_users
+FROM
+    cyclistic.`full_year_data`
+
+#Find the mode for days of the week
+SELECT day_of_week, member_casual, COUNT(*) AS num_of_rides,
+       AVG(full_year_data.ride_length) AS Avg_ride_length,
+       MAX(full_year_data.ride_length) AS Max_ride_length,
+       MIN(full_year_data.ride_length) AS Min_ride_length
+FROM  cyclistic.full_year_data
+GROUP BY day_of_week, member_casual
+ORDER BY day_of_week ASC
+
+#Mean, Max, Min of ride_length by member type
+SELECT member_casual,
+       AVG(full_year_data.ride_length) AS Avg_ride_length,
+       MAX(full_year_data.ride_length) AS Max_ride_length,
+       MIN(full_year_data.ride_length) AS Min_ride_length
+FROM cyclistic.full_year_data
+GROUP BY member_casual
+
+#Find the mode for months of the year
+SELECT month, member_casual, COUNT(*) AS num_of_rides,
+       AVG(full_year_data.ride_length) AS Avg_ride_length,
+       MAX(full_year_data.ride_length) AS Max_ride_length,
+       MIN(full_year_data.ride_length) AS Min_ride_length
+FROM  cyclistic.full_year_data
+GROUP BY month, year, member_casual
+ORDER BY month ASC
+
